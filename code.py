@@ -101,11 +101,6 @@ def mt_splash_scene():
     text1.text("MT Game Studios")
     text.append(text1)
 
-    text2 = stage.Text(width=29, height=14, font=None, palette=constants.MT_GAME_STUDIO_PALETTE, buffer=None)
-    text2.move(35, 110)
-    text2.text("PRESS START")
-    text.append(text2)
-
     # get sound ready
     # follow this guide to convert your other sounds to something that will work
     #    https://learn.adafruit.com/microcontroller-compatible-audio-file-conversion
@@ -131,13 +126,35 @@ def mt_splash_scene():
         # update game logic
 
         # Wait for 1 seconds
-        time.sleep(1.0)
+        time.sleep(3.0)
         game_splash_scene()
 
         # redraw sprite list
 
 def game_splash_scene():
-    # this function is the game scene
+    # this function is the MT splash scene
+
+    # an image bank for CircuitPython
+    image_bank_2 = stage.Bank.from_bmp16("mt_game_studio.bmp")
+
+    # sets the background to image 0 in the bank
+    background = stage.Grid(image_bank_2, constants.SCREEN_GRID_X, constants.SCREEN_GRID_Y)
+
+    text = []
+
+    text1 = stage.Text(width=29, height=15, font=None, palette=constants.MT_GAME_STUDIO_PALETTE, buffer=None)
+    text1.move(50, 60)
+    text1.text("TJ Games")
+    text.append(text1)
+
+    # create a stage for the background to show up on
+    #   and set the frame rate to 60fps
+    game = stage.Stage(ugame.display, 60)
+    # set the layers, items show up in order
+    game.layers = text + [background]
+    # render the background and inital location of sprite list
+    # most likely you will only render background once per scene
+    game.render_block()
 
     # repeat forever, game loop
     while True:
@@ -145,12 +162,41 @@ def game_splash_scene():
 
         # update game logic
 
-        # redraw sprite list
-        pass # just a placeholder until you write the code
+        # Wait for 3 seconds
+        time.sleep(3.0)
+        main_menu_scene()
 
+        # redraw sprite list
 
 def main_menu_scene():
-    # this function is the game scene
+# this function is the MT splash scene
+
+    # an image bank for CircuitPython
+    image_bank_2 = stage.Bank.from_bmp16("mt_game_studio.bmp")
+
+    # sets the background to image 0 in the bank
+    background = stage.Grid(image_bank_2, constants.SCREEN_GRID_X, constants.SCREEN_GRID_Y)
+
+    text = []
+
+    text1 = stage.Text(width=29, height=15, font=None, palette=constants.MT_GAME_STUDIO_PALETTE, buffer=None)
+    text1.move(20, 10)
+    text1.text("Clown Town")
+    text.append(text1)
+    
+    text2 = stage.Text(width=29, height=14, font=None, palette=constants.MT_GAME_STUDIO_PALETTE, buffer=None)
+    text2.move(35, 110)
+    text2.text("PRESS START")
+    text.append(text2)
+    
+    # create a stage for the background to show up on
+    #   and set the frame rate to 60fps
+    game = stage.Stage(ugame.display, 60)
+    # set the layers, items show up in order
+    game.layers = text + [background]
+    # render the background and inital location of sprite list
+    # most likely you will only render background once per scene
+    game.render_block()
 
     # repeat forever, game loop
     while True:
@@ -158,9 +204,11 @@ def main_menu_scene():
 
         # update game logic
 
-        # redraw sprite list
-        pass # just a placeholder until you write the code
+        # Wait for 3 seconds
+        time.sleep(3.0)
+        game_scene()
 
+        # redraw sprite list
 
 def game_scene():
     # this function is the game scene
