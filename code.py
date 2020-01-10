@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
-# Created by: ????
-# Created on: ???? 2019
-# This file is the "????" game
+# Created by: Teddy Sannan
+# Created on: Jan 2020
+# This file is the "Clown Town" game
 #   for CircuitPython
 
 import ugame
@@ -14,6 +14,7 @@ import random
 
 import constants
 
+sprites = []
 
 def blank_white_reset_scene():
     # this function is the splash scene game loop
@@ -135,7 +136,7 @@ def game_splash_scene():
     # this function is the MT splash scene
 
     # an image bank for CircuitPython
-    image_bank_2 = stage.Bank.from_bmp16("mt_game_studio.bmp")
+    image_bank_2 = stage.Bank.from_bmp16("sprites.bmp")
 
     # sets the background to image 0 in the bank
     background = stage.Grid(image_bank_2, constants.SCREEN_GRID_X, constants.SCREEN_GRID_Y)
@@ -172,7 +173,7 @@ def main_menu_scene():
 # this function is the MT splash scene
 
     # an image bank for CircuitPython
-    image_bank_2 = stage.Bank.from_bmp16("mt_game_studio.bmp")
+    image_bank_2 = stage.Bank.from_bmp16("sprites.bmp")
 
     # sets the background to image 0 in the bank
     background = stage.Grid(image_bank_2, constants.SCREEN_GRID_X, constants.SCREEN_GRID_Y)
@@ -180,10 +181,13 @@ def main_menu_scene():
     text = []
 
     text1 = stage.Text(width=29, height=15, font=None, palette=constants.MT_GAME_STUDIO_PALETTE, buffer=None)
-    text1.move(20, 10)
+    text1.move(40, 10)
     text1.text("Clown Town")
     text.append(text1)
     
+    clown = stage.Sprite(image_bank_2, 2, 70, 56)
+    sprites.append(clown)
+
     text2 = stage.Text(width=29, height=14, font=None, palette=constants.MT_GAME_STUDIO_PALETTE, buffer=None)
     text2.move(35, 110)
     text2.text("PRESS START")
@@ -193,7 +197,7 @@ def main_menu_scene():
     #   and set the frame rate to 60fps
     game = stage.Stage(ugame.display, 60)
     # set the layers, items show up in order
-    game.layers = text + [background]
+    game.layers = sprites + text + [background]
     # render the background and inital location of sprite list
     # most likely you will only render background once per scene
     game.render_block()
@@ -205,23 +209,63 @@ def main_menu_scene():
         # update game logic
 
         # Wait for 3 seconds
-        time.sleep(3.0)
-        game_scene()
+        keys = ugame.buttons.get_pressed()
+
+        if keys & ugame.K_START != 0:  # Start button
+            game_scene()
 
         # redraw sprite list
 
 def game_scene():
     # this function is the game scene
+    # an image bank for CircuitPython
+    image_bank_2 = stage.Bank.from_bmp16("sprites.bmp")
 
-    # repeat forever, game loop
+    # sets the background to image 0 in the bank
+    background = stage.Grid(image_bank_2, constants.SCREEN_GRID_X, constants.SCREEN_GRID_Y)
+    
+    ship = stage.Sprite(image_bank_2, 2, 74, 56)
+    sprites.insert(0, ship)  # insert at the top of sprite list
+
+    # create a stage for the background to show up
+    # setting the frame rate to 60fps
+    game = stage.Stage(ugame.display, 60)
+    # setting the layers to show them in order
+    game.layers = sprites + [background]
+    # rendering the background and the locations of the sprites
+    game.render_block()
+
+    # repeat forever game loop
     while True:
         # get user input
+        keys = ugame.buttons.get_pressed()
+
+        if keys & ugame.K_X:
+            pass
+        if keys & ugame.K_O:
+            pass
+        if keys & ugame.K_START:
+            pass
+        if keys & ugame.K_SELECT:
+            pass
+        if keys & ugame.K_RIGHT:
+            ship.move(ship.x + 1, ship.y)
+            pass
+        if keys & ugame.K_LEFT:
+            ship.move(ship.x - 1, ship.y)
+            pass
+        if keys & ugame.K_UP:
+            ship.move(ship.x, ship.y - 1)
+            pass
+        if keys & ugame.K_DOWN:
+            ship.move(ship.x, ship.y + 1)
+            pass
 
         # update game logic
 
         # redraw sprite list
-        pass # just a placeholder until you write the code
-
+        game.render_sprites(sprites)
+        game.tick()  # wait until refresh rate finishes
 
 def game_over_scene(final_score):
     # this function is the game over scene
