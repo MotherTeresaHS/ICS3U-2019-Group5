@@ -4,7 +4,7 @@
 Menu System
 ***********
 
-X
+In this game we have 3 scenes which consist of the the Start Scene, Splash Scene, and Game Over Scene.
 
 .. toctree::
    :maxdepth: 1
