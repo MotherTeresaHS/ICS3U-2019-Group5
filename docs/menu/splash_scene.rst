@@ -5,8 +5,10 @@ Splash Scene
 
 In the splash scene we start with the MT Game Studio splash scene which transciosns to the TJ Game splash scene after 3 seconds.
 
-```
-def blank_white_reset_scene():
+.. code-block:: python
+  :linenos:
+
+	def blank_white_reset_scene():
     # this function is the splash scene game loop
 
     # do house keeping to ensure everythng is setup
@@ -158,7 +160,6 @@ def game_splash_scene():
         main_menu_scene()
 
         # redraw sprite list
-```
 
 .. container:: twocol
 
