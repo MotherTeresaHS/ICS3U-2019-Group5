@@ -217,7 +217,7 @@ def main_menu_scene():
     text2.move(35, 110)
     text2.text("PRESS START")
     text.append(text2)
-    
+
     horn_sound = open("horn.wav", 'rb')
     sound = ugame.audio
     sound.stop()
@@ -305,10 +305,16 @@ def game_scene():
     # an image bank for CircuitPython
     image_bank_2 = stage.Bank.from_bmp16("sprites.bmp")
 
+    splat_sound = open("splat.wav", "rb")
+    sound = ugame.audio
+    sound.stop()
+    sound.mute(False)
+
     tomatos = []
     pies = []
     balloons = []
 
+    # drops tomatos
     for tomato_number in range(constants.TOTAL_NUMBER_OF_TOMATOS):
         a_single_tomato = stage.Sprite(image_bank_2, 3,
                                       constants.OFF_SCREEN_X,
@@ -317,6 +323,7 @@ def game_scene():
 
     show_tomato()
     
+    # drops pie
     for pie_number in range(constants.TOTAL_NUMBER_OF_PIES):
         a_single_pie = stage.Sprite(image_bank_2, 4,
                                       constants.OFF_SCREEN_X,
@@ -324,7 +331,9 @@ def game_scene():
         pies.append(a_single_pie)
 
     show_pie()
-    
+
+
+    # drops balloon
     for balloon_number in range(constants.TOTAL_NUMBER_OF_BALLOONS):
         a_single_balloon = stage.Sprite(image_bank_2, 5,
                                       constants.OFF_SCREEN_X,
@@ -356,23 +365,24 @@ def game_scene():
             if clown.x > constants.SCREEN_X - constants.SPRITE_SIZE:
                 clown.move(constants.SCREEN_X - constants.SPRITE_SIZE, clown.y)
             else:
-                clown.move(clown.x + 1, clown.y)
+                clown.move(clown.x + constants.CLOWN_SPEED, clown.y)
         if keys & ugame.K_LEFT != 0:
             if clown.x < 0:
                 clown.move(0, clown.y)
             else:
-                clown.move(clown.x - 1, clown.y)
+                clown.move(clown.x - constants.CLOWN_SPEED, clown.y)
         if keys & ugame.K_UP != 0:
             if clown.y < 0:
                 clown.move(clown.x, 0)
             else:
-                clown.move(clown.x, clown.y - 1)
+                clown.move(clown.x, clown.y - constants.CLOWN_SPEED)
         if keys & ugame.K_DOWN != 0:
             if clown.y > constants.SCREEN_Y - constants.SPRITE_SIZE:
                 clown.move(clown.x, constants.SCREEN_Y - constants.SPRITE_SIZE)
             else:
-                clown.move(clown.x, clown.y + 1)
-                
+                clown.move(clown.x, clown.y + constants.CLOWN_SPEED)
+
+        # resets tomatos and adds score
         for tomato_number in range(len(tomatos)):
             if tomatos[tomato_number].x > 0:
                 tomatos[tomato_number].move(tomatos[tomato_number].x,
@@ -389,6 +399,7 @@ def game_scene():
                     game.render_block()
                     show_tomato()
 
+        # resets pies
         for pie_number in range(len(pies)):
             if pies[pie_number].x > 0:
                 pies[pie_number].move(pies[pie_number].x,
@@ -399,6 +410,7 @@ def game_scene():
                                               constants.OFF_SCREEN_Y)
                     show_pie()
 
+        # resets balloons
         for balloon_number in range(len(balloons)):
             if balloons[balloon_number].x > 0:
                 balloons[balloon_number].move(balloons[balloon_number].x,
@@ -409,6 +421,51 @@ def game_scene():
                                               constants.OFF_SCREEN_Y)
                     show_balloon()
 
+        # collision with tomato
+        for tomato_number in range(len(tomatos)):
+            if tomatos[tomato_number].x > 0:
+                if stage.collide(tomatos[tomato_number].x + 1,
+                                 tomatos[tomato_number].y,
+                                 tomatos[tomato_number].x + 15,
+                                 tomatos[tomato_number].y + 15,
+                                 clown.x, clown.y, clown.x + 15, clown.y + 15):
+                    sound.stop()
+                    sound.play(splat_sound)
+                    time.sleep(2.0)
+                    sound.stop()
+                    sprites.remove(clown)
+                    game_over_scene(score)
+
+        # collision with pie
+        for pie_number in range(len(pies)):
+            if pies[pie_number].x > 0:
+                if stage.collide(pies[pie_number].x + 1,
+                                 pies[pie_number].y,
+                                 pies[pie_number].x + 15,
+                                 pies[pie_number].y + 15,
+                                 clown.x, clown.y, clown.x + 15, clown.y + 15):
+                    sound.stop()
+                    sound.play(splat_sound)
+                    time.sleep(2.0)
+                    sound.stop()
+                    sprites.remove(clown)
+                    game_over_scene(score)
+
+        # collision with balloon
+        for balloon_number in range(len(balloons)):
+            if balloons[balloon_number].x > 0:
+                if stage.collide(balloons[balloon_number].x + 1,
+                                 balloons[balloon_number].y,
+                                 balloons[balloon_number].x + 15,
+                                 balloons[balloon_number].y + 15,
+                                 clown.x, clown.y, clown.x + 15, clown.y + 15):
+                    sound.stop()
+                    sound.play(splat_sound)
+                    time.sleep(2.0)
+                    sound.stop()
+                    sprites.remove(clown)
+                    game_over_scene(score)
+
         # update game logic
 
         # redraw sprite list
@@ -418,14 +475,49 @@ def game_scene():
 def game_over_scene(final_score):
     # this function is the game over scene
 
-    # repeat forever, game loop
+    # an image bank for CircuitPython
+    image_bank_2 = stage.Bank.from_bmp16("sprites.bmp")
+
+    # sets the background to image 0 in the bank
+    background = stage.Grid(image_bank_2, constants.SCREEN_GRID_X, constants.SCREEN_GRID_Y)
+
+    text = []
+
+    text1 = stage.Text(width=29, height=14, font=None,
+                       palette=constants.MT_GAME_STUDIO_PALETTE, buffer=None)
+    text1.move(22, 20)
+    text1.text("Final Score: {:0>2d}".format(final_score))
+    text.append(text1)
+
+    text2 = stage.Text(width=29, height=14, font=None,
+                       palette=constants.MT_GAME_STUDIO_PALETTE, buffer=None)
+    text2.move(43, 60)
+    text2.text("GAME OVER")
+    text.append(text2)
+
+    text3 = stage.Text(width=29, height=14, font=None,
+                       palette=constants.MT_GAME_STUDIO_PALETTE, buffer=None)
+    text3.move(32, 110)
+    text3.text("PRESS SELECT")
+    text.append(text3)
+
+    # create a stage for the background to show up on
+    #   and set the frame rate to 60fps
+    game = stage.Stage(ugame.display, 60)
+    # set the background layer
+    game.layers = sprites + text + [background]
+    # render the background
+    # most likely you will only render background once per scene
+    game.render_block()
+
+    # Game loop
     while True:
-        # get user input
+        # Update game logic
+        keys = ugame.buttons.get_pressed()
 
-        # update game logic
-
-        # redraw sprite list
-        pass # just a placeholder until you write the code
+        if keys & ugame.K_SELECT != 0:
+            keys = 0
+            main_menu_scene()
 
 
 if __name__ == "__main__":
