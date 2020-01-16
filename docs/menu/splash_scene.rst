@@ -3,7 +3,51 @@
 Splash Scene
 ============
 
-In the splash scene we start with the MT Game Studio splash scene which transciosns to the TJ Game splash scene after 3 seconds.
+In the splash scene we start with a plain white splsh scene and transion to thethe MT Game Studio splash scene after 0.5 seconds which transciosns to the TJ Game splash scene after 3 seconds.
+
+.. code-block:: python
+  :linenos:
+  
+    def blank_white_reset_scene():
+       # this function is the splash scene game loop
+   
+       # do house keeping to ensure everythng is setup
+   
+       # set up the NeoPixels
+       pixels = neopixel.NeoPixel(board.NEOPIXEL, 5, auto_write=False)
+       pixels.deinit() # and turn them all off
+   
+       # reset sound to be off
+       sound = ugame.audio
+       sound.stop()
+       sound.mute(False)
+   
+       # an image bank for CircuitPython
+       image_bank_1 = stage.Bank.from_bmp16("mt_game_studio.bmp")
+   
+       # sets the background to image 0 in the bank
+       background = stage.Grid(image_bank_1, 160, 120)
+   
+       # create a stage for the background to show up on
+       #   and set the frame rate to 60fps
+       game = stage.Stage(ugame.display, 60)
+       # set the layers, items show up in order
+       game.layers = [background]
+       # render the background and inital location of sprite list
+       # most likely you will only render background once per scene
+       game.render_block()
+   
+       # repeat forever, game loop
+       while True:
+           # get user input
+   
+           # update game logic
+   
+           # Wait for 1/2 seconds
+           time.sleep(0.5)
+           mt_splash_scene()
+   
+           # redraw sprite list
 
 .. code-block:: python
   :linenos:
