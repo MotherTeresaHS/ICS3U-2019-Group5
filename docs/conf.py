@@ -41,7 +41,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'Clown Town - CircuitPython Game'
-copyright = u'2020, Teddy Sannan & Jack D'Angelo'
+copyright = u'2020, Teddy Sannan & Jack Dangelo'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
