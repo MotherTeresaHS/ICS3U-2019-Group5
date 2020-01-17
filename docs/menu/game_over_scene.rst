@@ -54,3 +54,15 @@ If you get hit by any of the objects the game makes a splat sound and takes you 
           if keys & ugame.K_SELECT != 0:
               keys = 0
               main_menu_scene()
+              
+.. container:: twocol
+
+  .. container:: leftside
+
+    .. image:: ./images/gm.jpg
+      :width: 320 px
+      :height: 240 px
+      :alt: PyBadge
+      :align: left
+
+  .. container:: rightside
