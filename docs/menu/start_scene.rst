@@ -101,7 +101,7 @@ After the splash scenes we transison to the menu scene where we see a clown alon
 
   .. container:: leftside
 
-    .. image:: ./images/gm.jpg
+    .. image:: ./images/menu.jpg
       :width: 320 px
       :height: 240 px
       :alt: PyBadge
