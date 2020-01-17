@@ -96,3 +96,15 @@ After the splash scenes we transison to the menu scene where we see a clown alon
               game_scene()
   
           # redraw sprite list
+          
+.. container:: twocol
+
+  .. container:: leftside
+
+    .. image:: ./images/menu.jpg
+      :width: 320 px
+      :height: 240 px
+      :alt: PyBadge
+      :align: left
+
+  .. container:: rightside
