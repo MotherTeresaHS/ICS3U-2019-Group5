@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 # Created by: Teddy Sannan & Jack D'Angelo
 # Created on: January 2020
 # This file is the "Clown Town" game
@@ -252,7 +250,7 @@ def main_menu_scene():
 
         # Wait for 3 seconds
         keys = ugame.buttons.get_pressed()
-
+        
         if keys & ugame.K_START != 0:  # Start button
             game_scene()
 
@@ -314,7 +312,7 @@ def game_scene():
     pies = []
     balloons = []
 
-    # drops tomatos
+    # drops tomatos 
     for tomato_number in range(constants.TOTAL_NUMBER_OF_TOMATOS):
         a_single_tomato = stage.Sprite(image_bank_2, 3,
                                       constants.OFF_SCREEN_X,
@@ -331,8 +329,7 @@ def game_scene():
         pies.append(a_single_pie)
 
     show_pie()
-
-
+    
     # drops balloon
     for balloon_number in range(constants.TOTAL_NUMBER_OF_BALLOONS):
         a_single_balloon = stage.Sprite(image_bank_2, 5,
@@ -365,24 +362,31 @@ def game_scene():
             if clown.x > constants.SCREEN_X - constants.SPRITE_SIZE:
                 clown.move(constants.SCREEN_X - constants.SPRITE_SIZE, clown.y)
             else:
+              
                 clown.move(clown.x + constants.CLOWN_SPEED, clown.y)
+
         if keys & ugame.K_LEFT != 0:
             if clown.x < 0:
                 clown.move(0, clown.y)
             else:
+              
                 clown.move(clown.x - constants.CLOWN_SPEED, clown.y)
+
         if keys & ugame.K_UP != 0:
             if clown.y < 0:
                 clown.move(clown.x, 0)
             else:
+              
                 clown.move(clown.x, clown.y - constants.CLOWN_SPEED)
+
         if keys & ugame.K_DOWN != 0:
             if clown.y > constants.SCREEN_Y - constants.SPRITE_SIZE:
                 clown.move(clown.x, constants.SCREEN_Y - constants.SPRITE_SIZE)
             else:
+              
                 clown.move(clown.x, clown.y + constants.CLOWN_SPEED)
 
-        # resets tomatos and adds score
+        # resets tomato    
         for tomato_number in range(len(tomatos)):
             if tomatos[tomato_number].x > 0:
                 tomatos[tomato_number].move(tomatos[tomato_number].x,
@@ -399,7 +403,7 @@ def game_scene():
                     game.render_block()
                     show_tomato()
 
-        # resets pies
+        # resets pie
         for pie_number in range(len(pies)):
             if pies[pie_number].x > 0:
                 pies[pie_number].move(pies[pie_number].x,
@@ -410,7 +414,7 @@ def game_scene():
                                               constants.OFF_SCREEN_Y)
                     show_pie()
 
-        # resets balloons
+        # resets pie
         for balloon_number in range(len(balloons)):
             if balloons[balloon_number].x > 0:
                 balloons[balloon_number].move(balloons[balloon_number].x,
@@ -435,7 +439,7 @@ def game_scene():
                     sound.stop()
                     sprites.remove(clown)
                     game_over_scene(score)
-
+                    
         # collision with pie
         for pie_number in range(len(pies)):
             if pies[pie_number].x > 0:
@@ -450,7 +454,7 @@ def game_scene():
                     sound.stop()
                     sprites.remove(clown)
                     game_over_scene(score)
-
+                    
         # collision with balloon
         for balloon_number in range(len(balloons)):
             if balloons[balloon_number].x > 0:
@@ -477,12 +481,12 @@ def game_over_scene(final_score):
 
     # an image bank for CircuitPython
     image_bank_2 = stage.Bank.from_bmp16("sprites.bmp")
-
+    
     # sets the background to image 0 in the bank
     background = stage.Grid(image_bank_2, constants.SCREEN_GRID_X, constants.SCREEN_GRID_Y)
 
     text = []
-
+    
     text1 = stage.Text(width=29, height=14, font=None,
                        palette=constants.MT_GAME_STUDIO_PALETTE, buffer=None)
     text1.move(22, 20)
@@ -504,8 +508,10 @@ def game_over_scene(final_score):
     # create a stage for the background to show up on
     #   and set the frame rate to 60fps
     game = stage.Stage(ugame.display, 60)
+   
     # set the background layer
-    game.layers = sprites + text + [background]
+    game.layers = text + [background]
+    
     # render the background
     # most likely you will only render background once per scene
     game.render_block()
