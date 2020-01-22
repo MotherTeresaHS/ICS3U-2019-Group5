@@ -135,16 +135,31 @@ def game_splash_scene():
 
     # an image bank for CircuitPython
     image_bank_2 = stage.Bank.from_bmp16("sprites.bmp")
+    image_bank_3 = stage.Bank.from_bmp16("splash_screen.bmp")
 
     # sets the background to image 0 in the bank
     background = stage.Grid(image_bank_2, constants.SCREEN_GRID_X, constants.SCREEN_GRID_Y)
 
-    text = []
-
-    text1 = stage.Text(width=29, height=15, font=None, palette=constants.MT_GAME_STUDIO_PALETTE, buffer=None)
-    text1.move(50, 60)
-    text1.text("TJ Games")
-    text.append(text1)
+    T = stage.Sprite(image_bank_3, 0, 65, 45)
+    sprites.append(T)
+    
+    J = stage.Sprite(image_bank_3, 1, 81, 45)
+    sprites.append(J)
+    
+    G = stage.Sprite(image_bank_3, 2, 40, 63)
+    sprites.append(G)
+    
+    A = stage.Sprite(image_bank_3, 3, 56, 63)
+    sprites.append(A)
+    
+    M = stage.Sprite(image_bank_3, 4, 72, 63)
+    sprites.append(M)
+    
+    E = stage.Sprite(image_bank_3, 5, 88, 63)
+    sprites.append(E)
+    
+    S = stage.Sprite(image_bank_3, 6, 104, 63)
+    sprites.append(S)
 
     # create a stage for the background to show up on
     #   and set the frame rate to 60fps
@@ -154,6 +169,14 @@ def game_splash_scene():
     # render the background and inital location of sprite list
     # most likely you will only render background once per scene
     game.render_block()
+    
+    sprites.remove(T)
+    sprites.remove(J)
+    sprites.remove(G)
+    sprites.remove(A)
+    sprites.remove(M)
+    sprites.remove(E)
+    sprites.remove(S)
 
     # repeat forever, game loop
     while True:
