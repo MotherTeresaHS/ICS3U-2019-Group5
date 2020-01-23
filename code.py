@@ -113,7 +113,7 @@ def mt_splash_scene():
     #   and set the frame rate to 60fps
     game = stage.Stage(ugame.display, 60)
     # set the layers, items show up in order
-    game.layers = text + [background]
+    game.layers = [background]
     # render the background and inital location of sprite list
     # most likely you will only render background once per scene
     game.render_block()
