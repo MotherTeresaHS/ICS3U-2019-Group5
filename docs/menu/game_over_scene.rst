@@ -3,7 +3,8 @@
 Game Over Scene
 ===============
 
-If you get hit by any of the objects the game makes a splat sound and takes you to the game over scene, where it gives you your final score and to press start if you wish to play again.
+If you get hit by any of the objects the game makes a splat sound and takes you to the game over scene, where it gives you you final score and to press start if you wish to play again.
+
 
 .. code-block:: python
   :linenos:
